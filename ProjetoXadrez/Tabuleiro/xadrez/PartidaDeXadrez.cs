@@ -6,8 +6,8 @@ namespace xadrez
     class PartidaDeXadrez
     {
         public Tabuleiro tab { get; private set; }
-        private int turno;
-        private Cor jogadorAtural;
+        public int turno { get; private set; }
+        public Cor jogadorAtural { get; private set; }
         public bool terminada { get; private set; }
 
         public PartidaDeXadrez()
@@ -18,15 +18,56 @@ namespace xadrez
             terminada = false;
             colocarPecas();
         }
-
-
-
+                
         public void executaMovimento(Posicao origem, Posicao destino)
         {
             Peca p = tab.retirarPeca(origem);
             p.incrementarQtdMovimentos();
             Peca pecaCapturada = tab.retirarPeca(destino);
             tab.colocarPeca(p, destino);
+
+        }
+
+        public void realizaJogada(Posicao origem, Posicao destino)
+        {
+            executaMovimento(origem, destino);
+            turno++;
+            mudaJogador();
+        }
+
+        public void validarPosicaoDeOrigem(Posicao pos)
+        {
+            if (tab.peca(pos) == null)
+            {
+                throw new TabuleiroExeption("Não existe peça de origem escolhida!");
+            }
+            if (jogadorAtural != tab.peca(pos).cor)
+            {
+                throw new TabuleiroExeption("A peça de origem escolhida não é sua!");
+            }
+            if (!tab.peca(pos).existeMovimentosPossiveis())
+            {
+                throw new TabuleiroExeption("Não há movimentos possiveis para a peça de origem escolhida!");
+            }
+        }
+
+        public void validarPosicaoDeDestino(Posicao origem, Posicao destino)
+        {
+            if (!tab.peca(origem).podeMoverPara(destino))
+            {
+                throw new TabuleiroExeption("Posição de destino Invalida!");
+            }
+        }
+        private void mudaJogador()
+        {
+            if (jogadorAtural == Cor.Branca)
+            {
+                jogadorAtural = Cor.Preta;
+            }
+            else
+            {
+                jogadorAtural = Cor.Branca;
+            }
 
         }
 
