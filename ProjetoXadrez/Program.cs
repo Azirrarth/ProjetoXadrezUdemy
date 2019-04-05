@@ -14,13 +14,14 @@ namespace ProjetoXadrez
 
                 while (!partida.terminada)
                 {
+
                     try
                     {
                         Console.Clear();
                         Tela.imprimirPartida(partida);
 
                         Console.WriteLine();
-                        Console.Write("Origen: ");
+                        Console.Write("Origem: ");
                         Posicao origem = Tela.lerPosicaoXadrez().toPosicao();
                         partida.validarPosicaoDeOrigem(origem);
 
@@ -49,10 +50,8 @@ namespace ProjetoXadrez
             {
                 Console.WriteLine(e.Message);
             }
-            Console.WriteLine();
 
-
-
+            Console.ReadLine();
         }
     }
 }
